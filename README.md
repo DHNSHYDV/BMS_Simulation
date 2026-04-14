@@ -1,4 +1,4 @@
-# BMS_Simulation: EV Battery Pack & EKF SOC Tracker
+# BMS_Simulation: Intelligent BMS & State Estimator
 
 A high-performance, browser-based **Lithium-ion Battery Management System (BMS)** simulator designed for real-time monitoring and advanced state estimation. This project was developed as a comprehensive engineering demonstration for **Embedded Systems in Electric Vehicles**.
 
