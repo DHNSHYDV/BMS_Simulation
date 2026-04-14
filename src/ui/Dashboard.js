@@ -11,6 +11,8 @@ export class Dashboard {
         this.elCellList = document.getElementById('cell-list');
         this.elTerminal = document.getElementById('can-terminal');
         this.elDemandVal = document.getElementById('demand-val');
+        this.elAlertList = document.getElementById('alert-list');
+        this.elDashboardContainer = document.querySelector('.dashboard-container');
         
         // Initialize cells
         this.initCellBars();
@@ -93,5 +95,31 @@ export class Dashboard {
 
         // Auto scroll to bottom
         this.elTerminal.scrollTop = this.elTerminal.scrollHeight;
+    }
+
+    updateAlerts(faults) {
+        if (faults.length === 0) {
+            this.elAlertList.innerHTML = '<div class="alert-placeholder">SYSTEM NOMINAL</div>';
+            this.elDashboardContainer.classList.remove('fault-critical');
+            return;
+        }
+
+        const hasCritical = faults.some(f => f.level === 'CRITICAL');
+        if (hasCritical) {
+            this.elDashboardContainer.classList.add('fault-critical');
+        } else {
+            this.elDashboardContainer.classList.remove('fault-critical');
+        }
+
+        this.elAlertList.innerHTML = '';
+        faults.forEach(f => {
+            const item = document.createElement('div');
+            item.className = `alert-item ${f.level === 'CRITICAL' ? 'alert-critical' : 'alert-warning'}`;
+            item.innerHTML = `
+                <span>[${f.type}] ${f.msg}</span>
+                <span>${f.level}</span>
+            `;
+            this.elAlertList.appendChild(item);
+        });
     }
 }

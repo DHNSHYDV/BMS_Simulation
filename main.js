@@ -64,6 +64,7 @@ function simLoop() {
             estSocPct
         );
         dashboard.updateCells(pack.cells);
+        dashboard.updateAlerts(pack.getFaults());
     }
 
     // 5. Generate and Log CAN Data

@@ -88,4 +88,19 @@ export class BatteryPack {
     getMaxTemp() {
         return Math.max(...this.cells.map(c => c.temperatureC));
     }
+
+    getFaults() {
+        const faults = [];
+        const maxV = this.getMaxCellVoltage();
+        const minV = this.getMinCellVoltage();
+        const maxT = this.getMaxTemp();
+        const current = Math.abs(this.packCurrent);
+
+        if (maxV > 4.25) faults.push({ type: 'OV', msg: 'Over-Voltage Detected (>4.25V)', level: 'CRITICAL' });
+        if (minV < 2.8) faults.push({ type: 'UV', msg: 'Under-Voltage Detected (<2.8V)', level: 'CRITICAL' });
+        if (maxT > 55.0) faults.push({ type: 'OT', msg: 'Over-Temperature Detected (>55°C)', level: 'CRITICAL' });
+        if (current > 110.0) faults.push({ type: 'OC', msg: 'Over-Current Detected (>110A)', level: 'WARNING' });
+        
+        return faults;
+    }
 }
