@@ -25,28 +25,17 @@ export class EKFChart {
     }
 
     draw() {
-        const w = this.canvas.width;
-        const h = this.canvas.height;
+        // Margins for labels
+        const marginL = 40;
+        const marginB = 30;
+        const w = this.canvas.width - marginL - 10;
+        const h = this.canvas.height - marginB - 10;
         const ctx = this.ctx;
 
         // Clear
-        ctx.clearRect(0, 0, w, h);
+        ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
 
         if (this.history.length < 2) return;
-
-        // Draw Grid
-        ctx.strokeStyle = 'rgba(56, 189, 248, 0.1)';
-        ctx.lineWidth = 1;
-        ctx.beginPath();
-        for (let y = 0; y <= h; y += h/4) {
-            ctx.moveTo(0, y);
-            ctx.lineTo(w, y);
-        }
-        for (let x = 0; x <= w; x += w/10) {
-            ctx.moveTo(x, 0);
-            ctx.lineTo(x, h);
-        }
-        ctx.stroke();
 
         // Autoscale Y based on history min/max
         let minSoc = 100, maxSoc = 0;
@@ -58,7 +47,6 @@ export class EKFChart {
         // Add margins to scale
         let yRange = maxSoc - minSoc;
         if (yRange < 2) { 
-            // minimum 2% zoom range to show some flat line without going infinite
             yRange = 2; 
             minSoc -= 1; 
             maxSoc += 1;
@@ -68,8 +56,39 @@ export class EKFChart {
             yRange = maxSoc - minSoc;
         }
 
-        const mapX = (idx) => (idx / (this.maxPoints - 1)) * w;
+        const mapX = (idx) => marginL + (idx / (this.maxPoints - 1)) * w;
         const mapY = (soc) => h - ((soc - minSoc) / yRange) * h;
+
+        // Draw Grid and Axis Labels
+        ctx.strokeStyle = 'rgba(56, 189, 248, 0.15)';
+        ctx.lineWidth = 1;
+        ctx.fillStyle = 'rgba(148, 163, 184, 0.8)';
+        ctx.font = '10px "Share Tech Mono"';
+        ctx.textAlign = 'right';
+
+        // Y-Axis Labels (SOC %)
+        for (let i = 0; i <= 4; i++) {
+            const yVal = minSoc + (yRange * i / 4);
+            const canvasY = mapY(yVal);
+            ctx.beginPath();
+            ctx.moveTo(marginL, canvasY);
+            ctx.lineTo(marginL + w, canvasY);
+            ctx.stroke();
+            ctx.fillText(`${yVal.toFixed(1)}%`, marginL - 5, canvasY + 3);
+        }
+
+        // X-Axis Labels (Time History)
+        ctx.textAlign = 'center';
+        // 200 points * 0.05s = 10 seconds total history
+        for (let i = 0; i <= 4; i++) {
+            const xPos = marginL + (w * i / 4);
+            const timeVal = (i - 4) * 2.5; // -10s, -7.5s, -5s, -2.5s, 0s
+            ctx.beginPath();
+            ctx.moveTo(xPos, 0);
+            ctx.lineTo(xPos, h);
+            ctx.stroke();
+            ctx.fillText(`${timeVal > 0 ? '+' : ''}${timeVal}s`, xPos, h + 15);
+        }
 
         // Draw True SOC
         ctx.beginPath();
@@ -87,7 +106,6 @@ export class EKFChart {
         ctx.beginPath();
         ctx.strokeStyle = '#0ff'; // Cyan
         ctx.lineWidth = 2;
-        // make it dashed to look cool
         ctx.setLineDash([5, 5]);
         this.history.forEach((p, idx) => {
             const x = mapX(idx + (this.maxPoints - this.history.length));
@@ -100,14 +118,15 @@ export class EKFChart {
 
         // Corner Readout (Top Left)
         const latest = this.history[this.history.length - 1];
-        ctx.fillStyle = 'rgba(0,0,0,0.5)';
-        ctx.fillRect(5, 5, 110, 45);
+        ctx.fillStyle = 'rgba(2, 6, 23, 0.8)';
+        ctx.fillRect(marginL + 10, 10, 110, 45);
         ctx.strokeStyle = 'rgba(0,255,255,0.3)';
-        ctx.strokeRect(5, 5, 110, 45);
+        ctx.strokeRect(marginL + 10, 10, 110, 45);
 
         ctx.fillStyle = '#fff';
         ctx.font = '12px "Share Tech Mono"';
-        ctx.fillText(`TRUE: ${latest.trueSoc.toFixed(2)}%`, 10, 22);
-        ctx.fillText(`EST:  ${latest.estSoc.toFixed(2)}%`, 10, 38);
+        ctx.textAlign = 'left';
+        ctx.fillText(`TRUE: ${latest.trueSoc.toFixed(2)}%`, marginL + 15, 27);
+        ctx.fillText(`EST:  ${latest.estSoc.toFixed(2)}%`, marginL + 15, 43);
     }
 }
