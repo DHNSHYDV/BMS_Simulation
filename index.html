@@ -8,7 +8,24 @@
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Rajdhani:wght@400;600&family=Share+Tech+Mono&display=swap" rel="stylesheet">
   </head>
   <body>
-    <div id="app" class="dashboard-container">
+    <div id="splash-screen" class="splash-screen">
+      <div class="splash-content glass-panel">
+        <h1 class="glitch" data-text="VISION ASTRAA">VISION ASTRAA</h1>
+        <p class="subtitle">ADVANCED BMS SIMULATION SUITE</p>
+        
+        <div class="battery-animation-container">
+          <div class="battery-outline">
+            <div id="battery-fill" class="battery-fill"></div>
+          </div>
+          <div class="battery-percentage" id="battery-load-pct">0%</div>
+        </div>
+
+        <button id="enter-btn" class="enter-btn">ENTER TO EXPERIENCE</button>
+        <p class="status-text" id="status-text">SYSTEM STANDBY...</p>
+      </div>
+    </div>
+
+    <div id="app" class="dashboard-container hidden">
       
       <!-- HEADER -->
       <header class="dashboard-header glass-panel">

@@ -320,3 +320,164 @@ h2 {
   z-index: 1000;
   box-shadow: inset 0 0 100px rgba(220, 38, 38, 0.3);
 }
+
+/* SPLASH SCREEN */
+.splash-screen {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: var(--bg-dark);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 2000;
+  transition: opacity 1s ease-in-out, visibility 1s;
+}
+
+.splash-content {
+  text-align: center;
+  padding: 4rem;
+  max-width: 600px;
+  width: 90%;
+}
+
+.subtitle {
+  font-family: 'Share Tech Mono', monospace;
+  color: var(--accent-cyan);
+  letter-spacing: 0.5rem;
+  margin-bottom: 3rem;
+  font-size: 0.9rem;
+}
+
+.enter-btn {
+  background: transparent;
+  border: 1px solid var(--accent-cyan);
+  color: var(--accent-cyan);
+  padding: 1rem 2rem;
+  font-family: 'Orbitron', sans-serif;
+  font-size: 1.1rem;
+  letter-spacing: 2px;
+  cursor: pointer;
+  transition: all 0.3s;
+  margin-top: 2rem;
+  border-radius: 4px;
+}
+
+.enter-btn:hover {
+  background: var(--accent-cyan);
+  color: var(--bg-dark);
+  box-shadow: 0 0 20px var(--accent-cyan);
+}
+
+.status-text {
+  margin-top: 1.5rem;
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 0.8rem;
+  color: var(--text-muted);
+}
+
+/* BATTERY ANIMATION */
+.battery-animation-container {
+  margin: 2rem auto;
+  display: none; /* hidden until enter is clicked */
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+}
+
+.battery-outline {
+  width: 150px;
+  height: 60px;
+  border: 3px solid var(--text-main);
+  border-radius: 6px;
+  position: relative;
+  padding: 4px;
+}
+
+.battery-outline::after {
+  content: "";
+  position: absolute;
+  right: -10px;
+  top: 15px;
+  width: 8px;
+  height: 25px;
+  background: var(--text-main);
+  border-radius: 0 4px 4px 0;
+}
+
+.battery-fill {
+  height: 100%;
+  width: 0%;
+  background: var(--accent-green);
+  transition: width 2s cubic-bezier(0.1, 0, 0.3, 1);
+  box-shadow: 0 0 15px var(--accent-green);
+}
+
+.battery-percentage {
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 1.5rem;
+  color: var(--accent-green);
+}
+
+/* UTILS */
+.hidden {
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+}
+
+.fade-out {
+  opacity: 0;
+  visibility: hidden;
+}
+
+/* GLITCH EFFECT */
+.glitch {
+  font-size: 3.5rem;
+  font-weight: bold;
+  position: relative;
+  color: white;
+}
+
+.glitch::before, .glitch::after {
+  content: attr(data-text);
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.glitch::before {
+  left: 2px;
+  text-shadow: -2px 0 var(--accent-red);
+  clip: rect(44px, 450px, 56px, 0);
+  animation: glitch-anim 5s infinite linear alternate-reverse;
+}
+
+.glitch::after {
+  left: -2px;
+  text-shadow: -2px 0 var(--accent-cyan);
+  clip: rect(44px, 450px, 56px, 0);
+  animation: glitch-anim2 5s infinite linear alternate-reverse;
+}
+
+@keyframes glitch-anim {
+  0% { clip: rect(31px, 9999px, 94px, 0); }
+  20% { clip: rect(62px, 9999px, 42px, 0); }
+  40% { clip: rect(11px, 9999px, 78px, 0); }
+  60% { clip: rect(89px, 9999px, 15px, 0); }
+  80% { clip: rect(5px, 9999px, 63px, 0); }
+  100% { clip: rect(72px, 9999px, 34px, 0); }
+}
+
+@keyframes glitch-anim2 {
+  0% { clip: rect(15px, 9999px, 56px, 0); }
+  20% { clip: rect(84px, 9999px, 12px, 0); }
+  40% { clip: rect(42px, 9999px, 91px, 0); }
+  60% { clip: rect(67px, 9999px, 23px, 0); }
+  80% { clip: rect(9px, 9999px, 74px, 0); }
+  100% { clip: rect(38px, 9999px, 49px, 0); }
+}

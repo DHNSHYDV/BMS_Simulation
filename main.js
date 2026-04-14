@@ -74,5 +74,56 @@ function simLoop() {
     }
 }
 
-// Start Simulator
-setInterval(simLoop, SIM_TICK_MS);
+// Start Simulator after boot
+function startSimulation() {
+    setInterval(simLoop, SIM_TICK_MS);
+}
+
+// BOOT SEQUENCE LOGIC
+const splash = document.getElementById('splash-screen');
+const app = document.getElementById('app');
+const enterBtn = document.getElementById('enter-btn');
+const batteryAnim = document.querySelector('.battery-animation-container');
+const batteryFill = document.getElementById('battery-fill');
+const loadPct = document.getElementById('battery-load-pct');
+const statusText = document.getElementById('status-text');
+
+enterBtn.addEventListener('click', () => {
+    // 1. UI Switch
+    enterBtn.style.display = 'none';
+    batteryAnim.style.display = 'flex';
+    statusText.textContent = 'INITIALIZING SYSTEM CORES...';
+
+    // 2. Animate Fill
+    setTimeout(() => {
+        batteryFill.style.width = '100%';
+        
+        let pct = 0;
+        const interval = setInterval(() => {
+            pct += 2;
+            loadPct.textContent = `${pct}%`;
+            if (pct >= 100) {
+                clearInterval(interval);
+                bootComplete();
+            }
+        }, 35); // matches roughly the 2s transition
+    }, 100);
+});
+
+function bootComplete() {
+    statusText.textContent = 'SYSTEMS ONLINE. HANDSHAKE SUCCESSFUL.';
+    statusText.style.color = 'var(--accent-green)';
+
+    setTimeout(() => {
+        // Fade out splash
+        splash.classList.add('fade-out');
+        
+        // Show dashboard
+        app.classList.remove('hidden');
+        
+        setTimeout(() => {
+            splash.style.display = 'none';
+            startSimulation();
+        }, 1000);
+    }, 800);
+}
