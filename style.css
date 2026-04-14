@@ -343,6 +343,15 @@ h2 {
   width: 90%;
 }
 
+.company-brand {
+  font-family: 'Orbitron', sans-serif;
+  color: var(--accent-cyan);
+  font-size: 0.7rem;
+  letter-spacing: 0.6rem;
+  margin-bottom: 0.5rem;
+  opacity: 0.7;
+}
+
 .subtitle {
   font-family: 'Share Tech Mono', monospace;
   color: var(--accent-cyan);
