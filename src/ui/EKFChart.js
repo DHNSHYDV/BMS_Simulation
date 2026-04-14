@@ -98,29 +98,8 @@ export class EKFChart {
         ctx.stroke();
         ctx.setLineDash([]); // reset
 
-        // --- ADDED: FLOATING TELEMETRY LABELS ---
-        const latest = this.history[this.history.length - 1];
-        const lastX = mapX(this.history.length - 1 + (this.maxPoints - this.history.length));
-        
-        ctx.font = 'bold 11px "Share Tech Mono"';
-        
-        // Label for True SOC
-        const trueY = mapY(latest.trueSoc);
-        ctx.fillStyle = '#0f0';
-        ctx.fillText(` TRUE: ${latest.trueSoc.toFixed(1)}%`, lastX - 70, trueY - 5);
-        ctx.beginPath();
-        ctx.arc(lastX, trueY, 3, 0, Math.PI * 2);
-        ctx.fill();
-
-        // Label for Est SOC
-        const estY = mapY(latest.estSoc);
-        ctx.fillStyle = '#0ff';
-        ctx.fillText(` EST : ${latest.estSoc.toFixed(1)}%`, lastX - 70, estY + 15);
-        ctx.beginPath();
-        ctx.arc(lastX, estY, 3, 0, Math.PI * 2);
-        ctx.fill();
-
         // Corner Readout (Top Left)
+        const latest = this.history[this.history.length - 1];
         ctx.fillStyle = 'rgba(0,0,0,0.5)';
         ctx.fillRect(5, 5, 110, 45);
         ctx.strokeStyle = 'rgba(0,255,255,0.3)';
