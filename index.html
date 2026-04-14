@@ -1,0 +1,91 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>BMS - Live EKF Dashboard</title>
+    <link rel="stylesheet" href="./style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Rajdhani:wght@400;600&family=Share+Tech+Mono&display=swap" rel="stylesheet">
+  </head>
+  <body>
+    <div id="app" class="dashboard-container">
+      
+      <!-- HEADER -->
+      <header class="dashboard-header glass-panel">
+        <div class="logo">
+          <h1>VISION ASTRAA // <span>BMS TELEMETRY DEMO</span></h1>
+        </div>
+        <div class="pack-status">
+            <div class="stat-box">
+              <span class="stat-label">PACK VOLTAGE</span>
+              <span class="stat-value" id="pack-voltage-val">0.00 V</span>
+            </div>
+            <div class="stat-box">
+              <span class="stat-label">PACK CURRENT</span>
+              <span class="stat-value" id="pack-current-val">0.00 A</span>
+            </div>
+            <div class="stat-box">
+              <span class="stat-label">MAX TEMP</span>
+              <span class="stat-value" id="max-temp-val">-- °C</span>
+            </div>
+            <div class="stat-box highlight">
+              <span class="stat-label">EKF SOC EST.</span>
+              <span class="stat-value" id="ekf-soc-val">0.00 %</span>
+            </div>
+        </div>
+      </header>
+
+      <!-- MAIN GRID -->
+      <main class="dashboard-grid">
+        
+        <!-- CELL VOLTAGES -->
+        <section class="glass-panel cell-panel">
+          <h2>[ CELL VOLTAGES ]</h2>
+          <div class="cell-list" id="cell-list">
+             <!-- Cell bars injected by JS -->
+          </div>
+        </section>
+
+        <!-- EKF AND CONTROLS -->
+        <section class="center-panel">
+          
+          <!-- CONTROLS -->
+          <div class="glass-panel control-panel">
+            <h2>[ LOAD DEMAND ]</h2>
+            <div class="slider-container">
+              <span id="slider-val-charge">-100A</span>
+              <input type="range" class="current-slider" id="current-slider" min="-100" max="100" value="0" step="1">
+              <span id="slider-val-discharge">+100A</span>
+            </div>
+            <div class="current-readout">
+               CURRENT DEMAND: <span id="demand-val">0 A</span>
+            </div>
+          </div>
+
+          <!-- EKF PLOT -->
+          <div class="glass-panel ekf-panel">
+            <h2>[ EKF SOC CONVERGENCE ]</h2>
+            <div class="chart-container">
+              <canvas id="ekf-canvas"></canvas>
+            </div>
+            <div class="legend">
+              <span class="legend-item"><span class="color-box" style="background:#0F0;"></span> True SOC</span>
+              <span class="legend-item"><span class="color-box" style="background:#0FF;"></span> EKF Est SOC</span>
+            </div>
+          </div>
+
+        </section>
+
+        <!-- CAN BUS LOG -->
+        <section class="glass-panel can-panel">
+          <h2>[ CAN BUS TERMINAL ]</h2>
+          <div class="terminal-window" id="can-terminal">
+            <!-- CAN frames injected by JS -->
+          </div>
+        </section>
+      </main>
+      
+    </div>
+    <script type="module" src="/main.js"></script>
+  </body>
+</html>
